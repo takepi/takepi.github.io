@@ -1,8 +1,12 @@
+
+// ServiceWorker処理：https://developers.google.com/web/fundamentals/primers/service-workers/?hl=ja
+
+// キャッシュ名とキャッシュファイルの指定
 var CACHE_NAME = 'pwa-sample-caches';
 var urlsToCache = [
-	'/githubPages/',
-    '/githubPages/css/style.css',
-	'/githubPages/drawer.js'
+	'/pwa/',
+	'/pwa/css/style.css',
+	'/pwa/main.js'
 ];
 
 // インストール処理
@@ -11,7 +15,7 @@ self.addEventListener('install', function(event) {
 		caches
 			.open(CACHE_NAME)
 			.then(function(cache) {
-                return cache.addAll(urlsToCache.map(url => new Request(url, {credentials: 'same-origin'})));
+				return cache.addAll(urlsToCache);
 			})
 	);
 });
