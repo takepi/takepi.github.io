@@ -21,7 +21,7 @@ function setManifest(path){
 }
 
 var userAgent = navigator.userAgent.toLowerCase();
-if (userAgent.indexOf("iphone") > 0 || userAgent("ipad") > 0){
+if (userAgent.indexOf("iphone") > 0 || userAgent.indexOf("ipad") > 0){
     setManifest("manifest_ios.json")
 } else {
     setManifest("manifest.json")
