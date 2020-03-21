@@ -1,6 +1,7 @@
 var CACHE_NAME = 'pwa-sample-caches';
 var urlsToCache = [
 	'/githubPages/',
+    '/githubPages/css/style.css',
 	'/githubPages/drawer.js'
 ];
 
