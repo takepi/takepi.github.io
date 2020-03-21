@@ -1,0 +1,13 @@
+{
+    "short_name": "sushi",
+    "name": "sansyu mori of toyama in spring",
+    "display": "browser",
+    "start_url": "index.html",
+    "icons": [
+        {
+            "src": "images/app-icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="manifest" href="manifest.json">
+<!--<link rel="manifest" href="manifest.json">-->
 <title>CAMERA</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -13,6 +13,20 @@
 
 <script src="main.js"></script>
 <script>
+function setManifest(path){
+    const manifest = document.createElement("link");
+    manifest.rel = "manifest";
+    manifest.href = path;
+    document.head.appendChild(manifest);
+}
+
+var userAgent = navigator.userAgent.toLowerCase();
+if (userAgent.indexOf("iphone") > 0 || userAgent("ipad") > 0){
+    setManifest("manifest_ios.json")
+} else {
+    setManifest("manifest.json")
+}
+
 if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register('sw.js').then(function(registration) {
 		console.log('ServiceWorker registration successful with scope: ', registration.scope);
