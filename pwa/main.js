@@ -1,5 +1,4 @@
 function openCamera() {
-    let dst = new cv.Mat();
     var video = document.querySelector('video');
     navigator.mediaDevices = navigator.mediaDevices
     || ((navigator.mozGetUserMedia 
@@ -22,4 +21,30 @@ function openCamera() {
         .catch(function(err) {
             console.log(err);
         });
+}
+
+function opencvCamera() {
+    let video = document.getElementById("videoInput");
+    let src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+    let dst = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+    let gray = new cv.Mat(); 
+    let cap = new cv.VideoCapture(video)
+    const FPS = 30;
+    
+    try{
+        if (!streaming){
+            src.delete();
+            dst.delete();
+            gray.delete();
+            return;
+        }
+    let begin = Date.now();
+    cap.read(src);
+    src.copyTo(dst);
+    cv.cvtColor(dst, gray, cv.COLOR_RGBA2GRAY, 0);
+    cv.imshow("canvasOutput", dst);
+    let delay = 1000/FPS - (Date.now() - begin);
+    } catch (err) {
+        console.log('opencv error: ', err);
+    }
 }
