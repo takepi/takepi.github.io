@@ -10,7 +10,7 @@ function opencvCamera() {
             });
         }
     } : null);
-    var constraints = { video: { facingMode: 'user', aspectRatio:{exact: window.innerHeight / window.innerWidth} } };
+    var constraints = { video: { facingMode: 'user'} };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
