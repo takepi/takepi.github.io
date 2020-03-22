@@ -3,16 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--<link rel="manifest" href="manifest.json">-->
 <title>CAMERA</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
+<body>
+<script async src="https://docs.opencv.org/3.4.1/opencv.js" src="main.js" onload="opencvCamera();" type="text/javascript"></script>
+</body>
+<!--
 <body onload="opencvCamera();">
     <video autoplay playsinline></video>
 </body>
-
-<script src="https://docs.opencv.org/3.4.1/opencv.js"></script>
-<script src="main.js"></script>
+-->
 <script>
 function setManifest(path){
     const manifest = document.createElement("link");
