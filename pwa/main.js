@@ -29,7 +29,7 @@ function opencvCamera() {
     const FPS = 30;
     
     try{
-        if (!streaming){
+        if (0){
             src.delete();
             dst.delete();
             gray.delete();
