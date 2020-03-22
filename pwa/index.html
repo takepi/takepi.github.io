@@ -7,13 +7,9 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<canvas id="canvasOutput" ></canvas>
 <script async src="https://docs.opencv.org/3.4.1/opencv.js" src="main.js" onload="opencvCamera();" type="text/javascript"></script>
 </body>
-<!--
-<body onload="opencvCamera();">
-    <video autoplay playsinline></video>
-</body>
--->
 <script>
 function setManifest(path){
     const manifest = document.createElement("link");

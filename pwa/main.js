@@ -26,8 +26,7 @@ function openCamera() {
 */
 function opencvCamera() {
     var video = document.querySelector('video');
-    
-    navigator.mediaDevices = navigator.mediaDevices
+        navigator.mediaDevices = navigator.mediaDevices
     || ((navigator.mozGetUserMedia 
     || navigator.webkitGetUserMedia) ? {
         getUserMedia: function(c) {
