@@ -1,3 +1,4 @@
+/*
 function openCamera() {
     var video = document.querySelector('video');
     navigator.mediaDevices = navigator.mediaDevices
@@ -22,7 +23,7 @@ function openCamera() {
             console.log(err);
         });
 }
-
+*/
 function opencvCamera() {
     let video = document.getElementById("videoInput");
     let src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
