@@ -1,4 +1,5 @@
 function openCamera() {
+    let dst = new cv.Mat();
     var video = document.querySelector('video');
     navigator.mediaDevices = navigator.mediaDevices
     || ((navigator.mozGetUserMedia 
