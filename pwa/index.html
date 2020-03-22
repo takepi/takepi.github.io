@@ -6,10 +6,10 @@
 <title>CAMERA</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-<canvas id="canvasOutput" ></canvas>
-<script async src="https://docs.opencv.org/3.4.1/opencv.js" src="main.js" onload="opencvCamera();"></script>
+<body onload="opencvCamera();">
+<canvas id="canvasOutput"></canvas>
 </body>
+<script async src="https://docs.opencv.org/3.4.1/opencv.js";"main.js"></script>
 <script>
 function setManifest(path){
     const manifest = document.createElement("link");
