@@ -7,40 +7,73 @@
 <body>
 <h2>OpenCV sample</h2>
 <p id="status">OpenCV.js is loading...</p>
-<div>
-  <div class="inputoutput">
-    <img id="imageSrc" alt="No Image" />
-    <div class="caption">imageSrc <input type="file" id="fileInput" name="file" /></div>
-  </div>
-  <br>
-  <form name="test">
-    <input type="button" value="grayscale" onClick="grayscale()">
-    <br>
-  </form>
-  <br>
-  <div class="inputoutput">
-    <canvas id="canvasOutput" ></canvas>
-    <div class="caption">canvasOutput</div>
-  </div>
-</div>
+<video id="video" width="320" height="240"></video>
+<canvas id="canvasOutput" width="320" height="240"></canvas>
 <script type="text/javascript">
-let imgElement = document.getElementById('imageSrc');
-let inputElement = document.getElementById('fileInput');
-inputElement.addEventListener('change', (e) => {
-  imgElement.src = URL.createObjectURL(e.target.files[0]);
-}, false);
-function grayscale(){
-  let mat = cv.imread(imgElement);
-  var dst = new cv.Mat();
-  cv.cvtColor(mat, dst, cv.COLOR_RGBA2GRAY, 0);
-  cv.imshow('canvasOutput', dst);
-  mat.delete();
-  dst.delete();
+let video = document.getElementById('video');
+onReady();
+var constraints = { video: { facingMode: 'user'} };
+navigator.mediaDevices.getUserMedia(constraints)
+    .then(function(stream) {
+        video.srcObject = stream;
+        video.onloadedmetadata = function(e) {
+            video.play();
+        };
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
+
+const FPS = 30;
+let stream;
+let streaming = false;
+function onReady() {
+    console.log("ready");
+    let src;
+    let dst;
+    let cap;
+    
+    video.controls = true;
+    video.addEventListener("play", start);
+    video.addEventListener("pause", stop);
+    video.addEventListener("ended", stop);
+    
+    function start(){
+        console.log("playing...");
+        streaming = true;
+        const width = video.width;
+        const height = video.height;
+        console.log(width, height)
+        src = new cv.Mat(width, height, cv.CV_8UC4);
+        dst = new cv.Mat(width, height, cv.CV_8UC1);
+        cap = new cv.VideoCapture(video);
+        setTimeout(processVideo, 0);        
+    }
+    
+    function stop(){
+        console.log("paused or ended");
+        streaming = false;
+    }
+    
+    function processVideo(){
+        if (!streaming) {
+            src.delete();
+            dst.delete();
+            return;
+        }
+        const begin = Date.now();
+        cap.read(src);
+        cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+        cv.imshow("canvasOutput", dst);
+        const delay = 1000/FPS - (Date.now() - begin);
+        setTimeout(processVideo, delay);
+    }
 }
 function onOpenCvReady() {
   document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
 }
 </script>
 <script async src="https://docs.opencv.org/3.4.1/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+<script onload="onReady();"></script>
 </body>
 </html>
