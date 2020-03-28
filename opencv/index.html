@@ -45,18 +45,16 @@ function onReady() {
     console.log("mat")
     let src = new cv.Mat(height, width, cv.CV_8UC4);
     let dst = new cv.Mat(height, width, cv.CV_8UC1);
-    let cap = new cv.VideoCapture(video);
+    let cap = new cv.VideoCapture("video");
     const FPS = 30;
     function processVideo() {
         let begin = Date.now();
         cap.read(src);
         cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
         cv.imshow("canvasOutput", dst);
-        // schedule next one.
         let delay = 1000/FPS - (Date.now() - begin);
         setTimeout(processVideo, delay);
     }
-    // schedule first one.
     setTimeout(processVideo, 0);
 /*
     console.log("ready");
@@ -104,12 +102,14 @@ function onReady() {
 function onOpenCvReady() {
   document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
   cv['onRuntimeInitialized']=()=>{
-    onReady();
+    console.log("opencv loaded")
+    onDOMReady();
   };
 }
 function onDOMReady() {
     window.addEventListener('load', (event) => {
         console.log('DOM fully loaded and parsed');
+        onReady();
     });
 }
 </script>
@@ -119,6 +119,6 @@ function onDOMReady() {
 <p id="status">OpenCV.js is loading...</p>
 <video controls id="video" display="none"></video>
 <canvas id="canvasOutput"></canvas>
-<script src="https://docs.opencv.org/4.2.0/opencv.js" onload="onOpenCvReady();onDOMReady();" type="text/javascript"></script>
+<script src="https://docs.opencv.org/4.2.0/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
 </body>
 </html>
