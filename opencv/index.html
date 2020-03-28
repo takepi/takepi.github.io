@@ -12,92 +12,37 @@
 -->
 <script type="text/javascript">
 function onReady() {
-    /*
-    let stream;
-    let streaming = false;
-    let src;
-    let dst;
-    let cap;
-    let timer;
-    const FPS = 30;
-    */
-    let video = document.getElementById('video');
-    var constraints = { video: { facingMode: 'user'} };
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then(function(stream) {
-            video.srcObject = stream;
-            video.play();
-            /*
-            video.onloadedmetadata = function(e) {
-                video.play();
-            };*/
-        })
-        .catch(function(err) {
-            console.log(err);
-        });
-
-    let canvasFrame = document.getElementById("canvasOutput");
-    let context = canvasFrame.getContext("2d");
-    const width = video.videoWidth;
-    const height = video.videoHeight;
-    video.width = width
-    video.height = height
-    console.log("mat")
-    let src = new cv.Mat(height, width, cv.CV_8UC4);
-    let dst = new cv.Mat(height, width, cv.CV_8UC1);
-    let cap = new cv.VideoCapture("video");
-    const FPS = 30;
-    function processVideo() {
-        let begin = Date.now();
-        cap.read(src);
-        cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-        cv.imshow("canvasOutput", dst);
-        let delay = 1000/FPS - (Date.now() - begin);
-        setTimeout(processVideo, delay);
-    }
-    setTimeout(processVideo, 0);
-/*
-    console.log("ready");
-    
-    video.addEventListener("play", start);
-    video.addEventListener("pause", stop);
-    video.addEventListener("ended", stop);
-
-    
-    function start(){
-        console.log("playing...");
-        cap = new cv.VideoCapture(video);
-        streaming = true;
-        const width = video.videoWidth;
-        const height = video.videoHeight;
-        video.width = width
-        video.height = height
-        src = new cv.Mat(height, width, cv.CV_8UC4);
-        dst = new cv.Mat(height, width, cv.CV_8UC1);
-        timer = setInterval(processVideo, 1000/FPS);
-    }
-    
-    function stop(){
-        console.log("paused or ended");
-        clearTimeout(timer)
-        streaming = false;
-    }
-    
-    function processVideo(){
-        try{
-            if (!streaming) {
-                console.log("inProcessVideo:streaming=false")
-                src.delete();
-                dst.delete();
-                return;
-            }
-            cap.read(src);
-            cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-            cv.imshow("canvasOutput", dst);
-        } catch (err) {
-            console.log(err);
-        }
-    };*/
+  let video = document.getElementById('video');
+  var constraints = { video: true };
+  let stream;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia(constraints)
+  } catch (err) {
+    console.log(err);
+  }
+  video.srcObject = stream;
+  await new Promise(resolve => { video.addEventListener("canplay", resolve) });
+  video.play();
+  let canvasFrame = document.getElementById("canvasOutput");
+  let context = canvasFrame.getContext("2d");
+  const width = video.videoWidth;
+  const height = video.videoHeight;
+  video.width = width
+  video.height = height
+  console.log("mat")
+  let src = new cv.Mat(height, width, cv.CV_8UC4);
+  let dst = new cv.Mat(height, width, cv.CV_8UC1);
+  let cap = new cv.VideoCapture(video);
+  const FPS = 30;
+  function processVideo() {
+    let begin = Date.now();
+    cap.read(src);
+    cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+    cv.imshow("canvasOutput", dst);
+    let delay = 1000 / FPS - (Date.now() - begin);
+    setTimeout(processVideo, delay);
+  }
+  setTimeout(processVideo, 0);
 }
 function onOpenCvReady() {
   document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
