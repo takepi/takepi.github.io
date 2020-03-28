@@ -36,7 +36,6 @@ function onReady() {
 
     console.log("ready");
     
-    video.controls = true;
     video.addEventListener("play", start);
     video.addEventListener("pause", stop);
     video.addEventListener("ended", stop);
@@ -44,15 +43,15 @@ function onReady() {
     
     function start(){
         console.log("playing...");
-        streaming = true;
         cap = new cv.VideoCapture(video);
+        streaming = true;
         const width = video.videoWidth;
         const height = video.videoHeight;
         video.width = width
         video.height = height
         src = new cv.Mat(height, width, cv.CV_8UC4);
         dst = new cv.Mat(height, width, cv.CV_8UC1);
-        timer = setInterval(processVideo, 1000/FPS)
+        timer = setInterval(processVideo, 1000/FPS);
     }
     
     function stop(){
@@ -80,6 +79,11 @@ function onReady() {
 function onOpenCvReady() {
   document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
 }
+function onDOMReady() {
+    window.addEventListener('DOMContentLoaded', (event) => {
+        console.log('DOM fully loaded and parsed');
+    });
+}
 </script>
 </head>
 <body>
@@ -87,6 +91,6 @@ function onOpenCvReady() {
 <p id="status">OpenCV.js is loading...</p>
 <video controls id="video" display="none"></video>
 <canvas id="canvasOutput"></canvas>
-<script src="https://docs.opencv.org/3.4.1/opencv.js" onload="onOpenCvReady();onReady();" type="text/javascript"></script>
+<script src="https://docs.opencv.org/3.4.1/opencv.js" onload="onOpenCvReady();onDOMReady();onReady();" type="text/javascript"></script>
 </body>
 </html>
