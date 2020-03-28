@@ -3,77 +3,90 @@
 <head>
 <meta charset="utf-8">
 <title>Hello OpenCV.js</title>
-</head>
-<body>
-<h2>OpenCV sample</h2>
-<p id="status">OpenCV.js is loading...</p>
-<video id="video" width="320" height="240"></video>
-<canvas id="canvasOutput" width="320" height="240"></canvas>
+<!--
+<style type="text/css">
+#video{
+	display:none;
+}
+</style>
+-->
 <script type="text/javascript">
-let video = document.getElementById('video');
-onReady();
-var constraints = { video: { facingMode: 'user'} };
-navigator.mediaDevices.getUserMedia(constraints)
-    .then(function(stream) {
-        video.srcObject = stream;
-        video.onloadedmetadata = function(e) {
-            video.play();
-        };
-    })
-    .catch(function(err) {
-        console.log(err);
-    });
-
-const FPS = 30;
-let stream;
-let streaming = false;
 function onReady() {
-    console.log("ready");
+    
+    let stream;
+    let streaming = false;
     let src;
     let dst;
     let cap;
+    let timer;
+    const FPS = 30;
+    
+    let video = document.getElementById('video');
+    var constraints = { video: { facingMode: 'user'} };
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(function(stream) {
+            video.srcObject = stream;
+            video.onloadedmetadata = function(e) {
+                video.play();
+            };
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+
+    console.log("ready");
     
     video.controls = true;
     video.addEventListener("play", start);
     video.addEventListener("pause", stop);
     video.addEventListener("ended", stop);
+
     
     function start(){
         console.log("playing...");
         streaming = true;
-        const width = video.width;
-        const height = video.height;
-        console.log(width, height)
-        src = new cv.Mat(width, height, cv.CV_8UC4);
-        dst = new cv.Mat(width, height, cv.CV_8UC1);
         cap = new cv.VideoCapture(video);
-        setTimeout(processVideo, 0);        
+        const width = video.videoWidth;
+        const height = video.videoHeight;
+        video.width = width
+        video.height = height
+        src = new cv.Mat(height, width, cv.CV_8UC4);
+        dst = new cv.Mat(height, width, cv.CV_8UC1);
+        timer = setInterval(processVideo, 1000/FPS)
     }
     
     function stop(){
         console.log("paused or ended");
+        clearTimeout(timer)
         streaming = false;
     }
     
     function processVideo(){
-        if (!streaming) {
-            src.delete();
-            dst.delete();
-            return;
+        try{
+            if (!streaming) {
+                console.log("inProcessVideo:streaming=false")
+                src.delete();
+                dst.delete();
+                return;
+            }
+            cap.read(src);
+            cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+            cv.imshow("canvasOutput", dst);
+        } catch (err) {
+            console.log(err);
         }
-        const begin = Date.now();
-        cap.read(src);
-        cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-        cv.imshow("canvasOutput", dst);
-        const delay = 1000/FPS - (Date.now() - begin);
-        setTimeout(processVideo, delay);
-    }
+    };
 }
 function onOpenCvReady() {
   document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
 }
 </script>
-<script async src="https://docs.opencv.org/3.4.1/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
-<script onload="onReady();"></script>
+</head>
+<body>
+<h2>OpenCV sample</h2>
+<p id="status">OpenCV.js is loading...</p>
+<video controls id="video" display="none"></video>
+<canvas id="canvasOutput"></canvas>
+<script src="https://docs.opencv.org/3.4.1/opencv.js" onload="onOpenCvReady();onReady();" type="text/javascript"></script>
 </body>
 </html>
