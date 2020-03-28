@@ -102,15 +102,11 @@ function onReady() {
 function onOpenCvReady() {
   document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
   cv['onRuntimeInitialized']=()=>{
-    console.log("opencv loaded")
     onDOMReady();
   };
 }
 function onDOMReady() {
-    window.addEventListener('load', (event) => {
-        console.log('DOM fully loaded and parsed');
-        onReady();
-    });
+    window.addEventListener('load', onReady());
 }
 </script>
 </head>
