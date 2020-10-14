@@ -4,7 +4,25 @@ html {
     background-color: #F59032;
 }
 
+body {
+    width: 600px;
+    margin: 0 auto;
+    background-color: #F8EE95;
+    padding: 0 20px 20px 20px;
+    border: 5px solid black;
+}
+
+img {
+    display: block;
+    width: 400px;
+    margin: 0 auto;
+}
+
 h2 {
+    margin: 0;
+    padding: 20px 0;
+    color:#F59032;
+    text-shadow: 3px 3px 1px black;
     font-size: 60px;
     text-align: center;
 }
