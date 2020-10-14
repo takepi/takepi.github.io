@@ -1,0 +1,20 @@
+html {
+    font-size: 10px;
+    font-family: 'Kosugi Maru', sans-serif;
+    background-color: #F59032;
+}
+
+h2 {
+    font-size: 60px;
+    text-align: center;
+}
+
+h3 {
+    font-size: 30px;
+}
+
+p, li, ol, a{
+    font-size: 16px;
+    line-height: 2;
+    letter-spacing: 1px;
+}
